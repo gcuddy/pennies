@@ -2,13 +2,13 @@
   import type { Category as TCategory } from "./types";
   import Category from "./category.svelte";
   import Button from "./button.svelte";
-  import { categoriesState, pennies, pennyCount } from "./state.svelte";
+  import { categoriesState, isSellingLaborPower, pennies, pennyCount } from "./state.svelte";
 
   let { categories, addCategory, total_budgeted } = categoriesState;
 
-//   let d = $derived(
-//     categories.reduce((acc, { budgeted }) => +acc + +budgeted, 0)
-//   );
+  //   let d = $derived(
+  //     categories.reduce((acc, { budgeted }) => +acc + +budgeted, 0)
+  //   );
 
   let value = $state("");
 
@@ -20,6 +20,63 @@
   }
 
   let shouldInvest = $derived(remaining() < 0);
+
+  let needToBudget = $state(false);
+
+  let needToBudgetTimeout: ReturnType<typeof setTimeout>;
+  $effect(() => {
+    if (remaining() > 0) {
+      needToBudgetTimeout = setTimeout(() => {
+        console.log("need to budget");
+        needToBudget = true;
+      }, 5000);
+    } else {
+      needToBudget = false;
+      clearTimeout(needToBudgetTimeout);
+    }
+    return () => clearTimeout(needToBudgetTimeout);
+  });
+
+  let pennyDecrementerInterval: ReturnType<typeof setInterval>;
+  let pennyDecrementerCountdown = $state(5);
+  let isDecrementingPennies = $state(false);
+  $effect(() => {
+    if (needToBudget && !isSellingLaborPower.isSellingLaborPower) {
+      pennyDecrementerInterval = setInterval(() => {
+        // console.log("decrementing pennies");
+        // pennies.count--;
+        pennyDecrementerCountdown--;
+      }, 1000);
+    } else {
+      clearInterval(pennyDecrementerInterval);
+      pennyDecrementerCountdown = 5;
+    }
+
+    return () => clearInterval(pennyDecrementerInterval);
+  });
+
+  $effect(() => {
+    if (pennyDecrementerCountdown <= 0) {
+      console.log("pennyDecrementerCountdown <= 0");
+      isDecrementingPennies = true;
+    } else {
+      isDecrementingPennies = false;
+    }
+  });
+
+  let isDecrementingPenniesInterval: ReturnType<typeof setInterval>;
+
+  $effect(() => {
+    if (isDecrementingPennies) {
+      console.log("isDecrementingPennies");
+      isDecrementingPenniesInterval = setInterval(() => {
+        pennies.count--;
+      }, 1000);
+    } else {
+      clearInterval(isDecrementingPenniesInterval);
+    }
+    return () => clearInterval(isDecrementingPenniesInterval);
+  });
 
   let interval: ReturnType<typeof setInterval>;
   $effect(() => {
@@ -40,8 +97,16 @@
   });
 </script>
 
-<div class="flex flex-col">
+<div class="flex flex-col h-fit">
   <span class="text-xl"> You have: {remaining()} pennies remaining!</span>
+  {#if remaining() > 0}
+    <span> Make sure you budget all your pennies! </span>
+    {#if needToBudget}
+      <span>
+        If you don't, you'll lose them in {pennyDecrementerCountdown} seconds!
+      </span>
+    {/if}
+  {/if}
   {#if shouldInvest}
     <span class="my-4 text-lg font-bold text-red-500"
       >You've budgeted too much!!! Let's start autoinvesting.</span
@@ -77,5 +142,5 @@
       <Category {category} bind:budgeted bind:activity />
     {/each}
   </div>
-  <span class="mt-auto">total budgeted: {total_budgeted()}</span>
+  <span class="pt-8">total budgeted: {total_budgeted()}</span>
 </div>

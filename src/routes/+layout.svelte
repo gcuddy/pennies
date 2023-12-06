@@ -38,7 +38,7 @@
 </script>
 
 <div class="app container mx-auto py-4">
-  <h1>Penny Wise</h1>
+  <h1>Pennies</h1>
   <slot />
 </div>
 

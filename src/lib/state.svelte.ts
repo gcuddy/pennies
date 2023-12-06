@@ -2,6 +2,11 @@ import type { Category } from "./types";
 
 export let pennyCount = $state(0);
 
+class LaborPower {
+  isSellingLaborPower = $state(false);
+}
+export let isSellingLaborPower = new LaborPower();
+
 export function addPenny() {
   //   pennyCount += 1;
 }

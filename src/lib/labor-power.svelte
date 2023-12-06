@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { pennies } from "./state.svelte";
+  import { pennies, isSellingLaborPower } from "./state.svelte";
 
   let interval: ReturnType<typeof setInterval>;
 
@@ -7,6 +7,14 @@
 
   let penny_count = $state(0);
   let penny_threshold = $state(1);
+
+  $effect(() => {
+    isSellingLaborPower.isSellingLaborPower = true;
+
+    return (() => {
+        isSellingLaborPower.isSellingLaborPower = false;
+    })
+  })
 
   $effect(() => {
     interval = setInterval(() => {
