@@ -21,7 +21,7 @@
 
   let shouldInvest = $derived(remaining() < 0);
 
-  let interval;
+  let interval: ReturnType<typeof setInterval>;
   $effect(() => {
     if (shouldInvest) {
       interval = setInterval(() => {

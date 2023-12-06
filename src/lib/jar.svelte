@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from "./button.svelte";
   import { pennyCount, pennies, categoriesState } from "./state.svelte";
+  import { cn } from "./utils";
 
   function invest() {
     // add between +50 and -50 pennies
@@ -18,8 +19,8 @@
 >
   <!--  -->
 
-  {#each Array(Math.max(0, pennies.count - categoriesState.total_budgeted())) as _}
-    <div class="rounded-full h-6 w-6 bg-orange-800" />
+  {#each Array(pennies.count) as _, i}
+    <div class={cn("rounded-full h-6 w-6 bg-orange-800", categoriesState.total_budgeted() > i && "bg-orange-800/25 border-2")} />
   {/each}
 </div>
 
