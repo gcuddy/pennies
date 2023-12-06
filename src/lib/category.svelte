@@ -4,12 +4,12 @@
   let { category, activity, budgeted } = $props<Category>();
 </script>
 
-<div class="flex">
-  <div role="cell">{category}</div>
-  <div role="cell">
-    <input type="number" bind:value={budgeted} />
+<div class="grid grid-cols-3 gap-4">
+  <div role="cell" class=" w-40">{category}</div>
+  <div role="cell" class="w-20">
+    <input class="bg-white rounded-lg text-center w-full" type="text" bind:value={budgeted} />
   </div>
-  <div role="cell">
-    <input type="number" bind:value={activity} />
+  <div role="cell" class=" w-20">
+    <input class="bg-white rounded-lg text-center w-full" type="text" bind:value={activity} />
   </div>
 </div>

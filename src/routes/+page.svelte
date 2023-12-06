@@ -8,7 +8,7 @@
   <!-- <meta name="description" content="Svelte demo app" /> -->
 </svelte:head>
 
-<div class="flex gap-4 justify-evenly">
+<div class="flex gap-4 justify-between">
   <div class="sm:order-2">
     <Jar />
   </div>
