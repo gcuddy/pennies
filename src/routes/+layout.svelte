@@ -50,7 +50,7 @@
       The rules: you start with 0 pennies. You can try investing,
       though that might not work and you might lose all your money. A reliable
       way to make money in a capitalist hellscape is to sell your labor power.
-      But that's not the most reliable. As you go, you have to keep up with the
+      But that's not the most reliable, and it's obviously time consuming. As you go, you have to keep up with the
       rising costs of Food and Rent. You can try to add more budget categories
       if you want, as well. But it might be best to stick to the essentials. You
       can ask for a penny, but you'll only get a few a day. Still, it's not
