@@ -18,7 +18,7 @@
 >
   <!--  -->
 
-  {#each Array(pennies.count - categoriesState.total_budgeted) as _}
+  {#each Array(Math.max(0, pennies.count - categoriesState.total_budgeted())) as _}
     <div class="rounded-full h-6 w-6 bg-orange-800" />
   {/each}
 </div>

@@ -7,7 +7,18 @@ export function addPenny() {
 }
 
 function createCategoryState() {
-  let categories = $state<Category[]>([]);
+  let categories = $state<Category[]>([
+    {
+      category: "Food",
+      activity: 0,
+      budgeted: 0,
+    },
+    {
+      category: "Rent",
+      activity: 0,
+      budgeted: 0,
+    },
+  ]);
 
   function addCategory(category: string) {
     categories.push({
@@ -16,9 +27,14 @@ function createCategoryState() {
       budgeted: 0,
     });
   }
-  let total_budgeted = $derived(
-    categories.reduce((acc, curr) => +curr.budgeted + +acc, 0)
-  );
+
+  //   let total_budgeted = $derived(
+  //     categories.reduce((acc, { budgeted }) => +acc + +budgeted, 0)
+  //   );
+
+  function total_budgeted() {
+    return categories.reduce((acc, { budgeted }) => +acc + +budgeted, 0);
+  }
 
   return {
     get categories() {

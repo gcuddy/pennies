@@ -4,11 +4,11 @@
   import Button from "./button.svelte";
   import { categoriesState, pennies, pennyCount } from "./state.svelte";
 
-  let {
-    categories,
-    addCategory,
-    total_budgeted
-  } = categoriesState
+  let { categories, addCategory, total_budgeted } = categoriesState;
+
+//   let d = $derived(
+//     categories.reduce((acc, { budgeted }) => +acc + +budgeted, 0)
+//   );
 
   let value = $state("");
 
@@ -16,7 +16,7 @@
 
   function remaining() {
     console.log("remaining");
-    return pennies.count - total_budgeted;
+    return pennies.count - total_budgeted();
   }
 
   let shouldInvest = $derived(remaining() < 0);
@@ -32,6 +32,11 @@
       }, 1000);
     }
     return () => clearInterval(interval);
+  });
+
+  $effect(() => {
+    console.log("categories changed");
+    console.log({ categories });
   });
 </script>
 
@@ -60,7 +65,7 @@
     />
     <Button disabled={!value}>Add</Button>
   </form>
-
+  <!-- {d} -->
   <div class="grid grid-cols-3">
     <span class="w-40">name</span>
     <span class="w-20">budgeted</span>
@@ -72,5 +77,5 @@
       <Category {category} bind:budgeted bind:activity />
     {/each}
   </div>
-  <span>total budgeted: {total_budgeted}</span>
+  <span class="mt-auto">total budgeted: {total_budgeted()}</span>
 </div>
