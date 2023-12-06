@@ -1,10 +1,6 @@
 <script lang="ts">
-  import { melt } from "@melt-ui/svelte";
-  import Button from "./button.svelte";
-  import { pennyCount, pennies, categoriesState } from "./state.svelte";
-  import AlertDialog from "./ui/alert-dialog.svelte";
+  import { categoriesState, gameStatus, pennies } from "./state.svelte";
   import { cn } from "./utils";
-  import LaborPower from "./labor-power.svelte";
 
   function invest() {
     // add between +50 and -50 pennies
@@ -30,9 +26,18 @@
       )?.budgeted ?? 0
     );
   }
+
+  let height = $state(0);
+  $effect(() => {
+    if (pennies.count > 250) {
+        // you won
+        gameStatus.gameStatus = 1;
+    }
+  });
 </script>
 
 <div
+  bind:clientHeight={height}
   class="h-[75vh] relative w-72 overflow-hidden border-4 rounded-t-3xl rounded-b-lg border-black grid grid-cols-12 place-content-end"
 >
   <!--  -->
@@ -83,16 +88,4 @@
 
 <div class="flex flex-col">
   <button onclick={pennies.inc}> add penny </button>
-
-  <Button onclick={invest} class="mt-9">INVEST !!!!!</Button>
-  <Button
-    onclick={() => {
-      dialog_open = true;
-    }}
-    class="mt-9">SELL YOUR LABOR-POWER</Button
-  >
 </div>
-
-<AlertDialog bind:open={dialog_open} title="SELL YOUR LABOR POWER">
-  <LaborPower />
-</AlertDialog>

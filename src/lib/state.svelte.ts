@@ -2,6 +2,21 @@ import type { Category } from "./types";
 
 export let pennyCount = $state(0);
 
+function createGameStatusState() {
+  let gameStatus = $state(2); // 0 for playing, 1 for won, -1 for lost, 2 for pause
+
+  return {
+    get gameStatus() {
+      return gameStatus;
+    },
+    set gameStatus(n: number) {
+      gameStatus = n;
+    },
+  };
+}
+
+export let gameStatus = createGameStatusState();
+
 class LaborPower {
   isSellingLaborPower = $state(false);
 }
@@ -62,9 +77,16 @@ export function createPennyCounter(initial = 0) {
 
   function inc() {
     incamount++;
-    if (incamount > 6) {
-      alert("That's enough pennies for today");
-      return;
+    if (incamount > 10) {
+      // randomize a chance that the penny count will actually increase
+      // make it less likely to increase the more pennies you have
+      if (Math.random() < 0.01 / (1 + count)) {
+        count++;
+        incamount = 0;
+      } else {
+        alert("That's enough pennies for now.");
+        return;
+      }
     }
     count++;
   }

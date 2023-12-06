@@ -2,7 +2,14 @@
   import type { Category as TCategory } from "./types";
   import Category from "./category.svelte";
   import Button from "./button.svelte";
-  import { categoriesState, isSellingLaborPower, pennies, pennyCount } from "./state.svelte";
+  import {
+    categoriesState,
+    isSellingLaborPower,
+    pennies,
+    pennyCount,
+  } from "./state.svelte";
+  import AddButtons from "./add-buttons.svelte";
+  import { DAILY_FOOD, DAILY_RENT } from "./constants";
 
   let { categories, addCategory, total_budgeted } = categoriesState;
 
@@ -11,6 +18,25 @@
   //   );
 
   let value = $state("");
+
+  let inDebt = $derived(
+    categoriesState.categories.some((c) => Math.floor(+c.activity) > +c.budgeted)
+  );
+
+  let activity_interval: ReturnType<typeof setInterval>;
+  $effect(() => {
+    activity_interval = setInterval(() => {
+      categories.forEach((category) => {
+        if (category.category.toLowerCase() === "rent") {
+          category.activity += DAILY_RENT / 24 / 60 / 60;
+        } else if (category.category.toLowerCase() === "food") {
+          category.activity += DAILY_FOOD / 24 / 60 / 60;
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(activity_interval);
+  });
 
   //   let remaining = $derived(pennies.count - total_budgeted)
 
@@ -41,7 +67,7 @@
   let pennyDecrementerCountdown = $state(5);
   let isDecrementingPennies = $state(false);
   $effect(() => {
-    if (needToBudget && !isSellingLaborPower.isSellingLaborPower) {
+    if ((needToBudget || inDebt) && !isSellingLaborPower.isSellingLaborPower) {
       pennyDecrementerInterval = setInterval(() => {
         // console.log("decrementing pennies");
         // pennies.count--;
@@ -142,5 +168,12 @@
       <Category {category} bind:budgeted bind:activity />
     {/each}
   </div>
+
+  {#if inDebt}
+    <span class="py-2 text-red-500">
+        You're in debt! You need to budget more!
+    </span>
+  {/if}
   <span class="pt-8">total budgeted: {total_budgeted()}</span>
+  <AddButtons />
 </div>
