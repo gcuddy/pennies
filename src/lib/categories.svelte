@@ -1,28 +1,39 @@
 <script lang="ts">
-	let categories = $state<string[]>([]);
+  import type { Category as TCategory } from "./types";
+  import Category from "./category.svelte";
 
-	function addCategory(category: string) {
-		categories.push(category);
-	}
+  let categories = $state<TCategory[]>([]);
 
-	let value = $state('');
+  function addCategory(category: string) {
+    categories.push({
+      category,
+      activity: 0,
+      budgeted: 0,
+    });
+  }
+
+  let value = $state("");
 </script>
 
 <form
-	onsubmit={(e) => {
-        e.preventDefault();
-		addCategory(value);
-		console.log(e);
-		value = '';
-	}}
-    class="flex gap-2"
+  onsubmit={(e) => {
+    e.preventDefault();
+    addCategory(value);
+    console.log(e);
+    value = "";
+  }}
+  class="flex gap-2"
 >
-    <input class="text-lg border bg-transparent rounded p-4" bind:value type="text" />
-	<button>Add</button>
+  <input
+    class="text-lg border bg-transparent rounded p-4"
+    bind:value
+    type="text"
+  />
+  <button>Add</button>
 </form>
 
 {#each categories as category}
-	<div>
-		{category}
-	</div>
+  <div>
+    <Category {...category} />
+  </div>
 {/each}

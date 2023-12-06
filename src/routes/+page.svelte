@@ -1,13 +1,16 @@
 <script>
   import Categories from "$lib/categories.svelte";
-
-
+  import Jar from "$lib/jar.svelte";
 </script>
 
 <svelte:head>
-	<title>Penny Wise</title>
-	<!-- <meta name="description" content="Svelte demo app" /> -->
+  <title>Penny Wise</title>
+  <!-- <meta name="description" content="Svelte demo app" /> -->
 </svelte:head>
 
-
-<Categories />
+<div class="flex gap-4 justify-evenly">
+  <div class="sm:order-2">
+    <Jar />
+  </div>
+  <Categories />
+</div>
