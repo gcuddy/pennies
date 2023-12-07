@@ -2,8 +2,12 @@ import type { Category } from "./types";
 
 export let pennyCount = $state(0);
 
+
+
 function createGameStatusState() {
   let gameStatus = $state(2); // 0 for playing, 1 for won, -1 for lost, 2 for pause
+
+  let winCondition = $state(250);
 
   return {
     get gameStatus() {
@@ -11,6 +15,14 @@ function createGameStatusState() {
     },
     set gameStatus(n: number) {
       gameStatus = n;
+    },
+
+    get winCondition() {
+      return winCondition;
+    },
+
+    set winCondition(n: number) {
+      winCondition = n;
     },
   };
 }

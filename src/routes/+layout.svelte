@@ -54,7 +54,7 @@
       rising costs of Food and Rent. You can try to add more budget categories
       if you want, as well. But it might be best to stick to the essentials. You
       can ask for a penny, but you'll only get a few a day. Still, it's not
-      nothing. And remember the golden rule: <b>budget all your pennies!</b>.
+      nothing. If you're in the red, you can declare bankruptcy, but your goal will increase by 100 pennies. And remember the golden rule: <b>budget all your pennies!</b>.
       Good luck!
     </div>
     <div>You win by getting to 250 pennies.</div>

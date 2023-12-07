@@ -175,5 +175,5 @@
     </span>
   {/if}
   <span class="pt-8">total budgeted: {total_budgeted()}</span>
-  <AddButtons />
+  <AddButtons showBankruptcy={shouldInvest} />
 </div>

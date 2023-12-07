@@ -29,7 +29,7 @@
 
   let height = $state(0);
   $effect(() => {
-    if (pennies.count > 250) {
+    if (pennies.count >= gameStatus.winCondition) {
         // you won
         gameStatus.gameStatus = 1;
     }
@@ -38,11 +38,11 @@
 
 <div
   bind:clientHeight={height}
-  class="h-[75vh] relative w-72 overflow-hidden border-4 rounded-t-3xl rounded-b-lg border-black grid grid-cols-12 place-content-end"
+  class="h-[75vh] relative w-72 border-4 rounded-t-3xl rounded-b-lg border-black grid grid-cols-12 place-content-end"
 >
   <!--  -->
   {#if pennies.count - categoriesState.total_budgeted() < 0}
-    <div class="absolute w-full h-full bg-red-400/50 grid place-content-center">
+    <div class="absolute w-full rounded-[inherit] h-full bg-red-400/50 grid place-content-center">
       <span
         >Oh no! You've over budgeted by {Math.abs(
           pennies.count - categoriesState.total_budgeted()
@@ -51,6 +51,9 @@
     </div>
   {/if}
 
+  <div class="absolute -top-8">
+    Goal: {gameStatus.winCondition} pennies
+  </div>
   {#each Array(housing() ?? 0) as _}
     <div
       class={cn(
