@@ -30,8 +30,8 @@
   let height = $state(0);
   $effect(() => {
     if (pennies.count >= gameStatus.winCondition) {
-        // you won
-        gameStatus.gameStatus = 1;
+      // you won
+      gameStatus.gameStatus = 1;
     }
   });
 </script>
@@ -42,18 +42,24 @@
 >
   <!--  -->
   {#if pennies.count - categoriesState.total_budgeted() < 0}
-    <div class="absolute w-full rounded-[inherit] h-full bg-red-400/50 grid place-content-center">
+    <div
+      class="absolute w-full rounded-[inherit] h-full bg-red-400/50 grid place-content-center"
+    >
       <span
         >Oh no! You've over budgeted by {Math.abs(
           pennies.count - categoriesState.total_budgeted()
         )} pennies :~(</span
       >
     </div>
+  {:else}
+    <div class="absolute w-full h-full grid place-content-center">
+      <div class="flex flex-col w-fit h-fit bg-white/75 rounded-lg p-2">
+          <span>You have: {pennies.count} pennies</span>
+          <span>Goal: {gameStatus.winCondition} pennies</span>
+      </div>
+    </div>
   {/if}
 
-  <div class="absolute -top-8">
-    Goal: {gameStatus.winCondition} pennies
-  </div>
   {#each Array(housing() ?? 0) as _}
     <div
       class={cn(
